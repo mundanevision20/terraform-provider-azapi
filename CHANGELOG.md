@@ -2,6 +2,7 @@
 FEATURES:
 - `azapi`: Support `use_msi` and `use_cli` features.
 - `azapi`: Support `auxiliary_tenant_ids` field, which is required for multi-tenancy and cross-tenant scenarios.
+- `azapi`: Support `metadata_host` field, which is used to obtain the Cloud Environment when using a Custom Azure Environment.
 
 ENHANCEMENTS:
 

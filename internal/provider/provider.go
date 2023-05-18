@@ -75,19 +75,18 @@ func azureProvider() *schema.Provider {
 
 			"environment": {
 				Type:         schema.TypeString,
-				Required:     true,
+				Optional:     true,
 				DefaultFunc:  schema.EnvDefaultFunc("ARM_ENVIRONMENT", "public"),
 				ValidateFunc: validation.StringInSlice([]string{"public", "usgovernment", "china"}, true),
 				Description:  "The Cloud Environment which should be used. Possible values are public, usgovernment and china. Defaults to public.",
 			},
 
-			// TODO@mgd: the metadata_host is used to retrieve metadata from Azure to identify current environment, this is used to eliminate Azure Stack usage, in which case the provider doesn't support.
-			// "metadata_host": {
-			// 	Type:        schema.TypeString,
-			// 	Required:    true,
-			// 	DefaultFunc: schema.EnvDefaultFunc("ARM_METADATA_HOSTNAME", ""),
-			// 	Description: "The Hostname which should be used for the Azure Metadata Service.",
-			// },
+			"metadata_host": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_METADATA_HOSTNAME", ""),
+				Description: "The Hostname which should be used for the Azure Metadata Service.",
+			},
 
 			// Client Certificate specific fields
 			"client_certificate_path": {
@@ -232,15 +231,23 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 
 		var cloudConfig cloud.Configuration
 		env := d.Get("environment").(string)
-		switch strings.ToLower(env) {
-		case "public":
-			cloudConfig = cloud.AzurePublic
-		case "usgovernment":
-			cloudConfig = cloud.AzureGovernment
-		case "china":
-			cloudConfig = cloud.AzureChina
-		default:
-			return nil, diag.Errorf("unknown `environment` specified: %q", env)
+		if metadataHost := d.Get("metadata_host").(string); metadataHost != "" {
+			config, err := FromEndpoint(ctx, metadataHost, env)
+			if err != nil {
+				return nil, diag.Errorf("failed to get cloud configuration from metadata host(metadata_host: %s, environment: %s): %v", metadataHost, env, err)
+			}
+			cloudConfig = *config
+		} else {
+			switch strings.ToLower(env) {
+			case "public":
+				cloudConfig = cloud.AzurePublic
+			case "usgovernment":
+				cloudConfig = cloud.AzureGovernment
+			case "china":
+				cloudConfig = cloud.AzureChina
+			default:
+				return nil, diag.Errorf("unknown `environment` specified: %q", env)
+			}
 		}
 
 		// Maps the auth related environment variables used in the provider to what azidentity honors.
