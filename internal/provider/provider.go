@@ -77,7 +77,7 @@ func azureProvider() *schema.Provider {
 				Type:         schema.TypeString,
 				Optional:     true,
 				DefaultFunc:  schema.EnvDefaultFunc("ARM_ENVIRONMENT", "public"),
-				ValidateFunc: validation.StringInSlice([]string{"public", "usgovernment", "china"}, true),
+				ValidateFunc: validation.StringInSlice([]string{"public", "usgovernment", "china", ""}, true),
 				Description:  "The Cloud Environment which should be used. Possible values are public, usgovernment and china. Defaults to public.",
 			},
 
