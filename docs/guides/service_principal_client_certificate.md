@@ -19,7 +19,7 @@ This guide will cover how to generate a client certificate, how to create an App
 Firstly we need to create a certificate which can be used for authentication. To do that we're going to generate a Certificate Signing Request (also known as a CSR) using `openssl` (this can also be achieved using PowerShell, however, that's outside the scope of this document):
 
 ```shell
-$ openssl req -newkey rsa:4096 -nodes -keyout "service-principal.key" -out "service-principal.csr"
+openssl req -newkey rsa:4096 -nodes -keyout "service-principal.key" -out "service-principal.csr"
 ```
 
 -> During the generation of the certificate you'll be prompted for various bits of information required for the certificate signing request - at least one item has to be specified for this to complete.
@@ -27,13 +27,13 @@ $ openssl req -newkey rsa:4096 -nodes -keyout "service-principal.key" -out "serv
 We can now sign that Certificate Signing Request, in this example we're going to self-sign this certificate using the Key we just generated; however it's also possible to do this using a Certificate Authority. In order to do that we're again going to use `openssl`:
 
 ```shell
-$ openssl x509 -signkey "service-principal.key" -in "service-principal.csr" -req -days 365 -out "service-principal.crt"
+openssl x509 -signkey "service-principal.key" -in "service-principal.csr" -req -days 365 -out "service-principal.crt"
 ```
 
 Finally we can generate a PFX file which can be used to authenticate with Azure:
 
 ```shell
-$ openssl pkcs12 -export -out "service-principal.pfx" -inkey "service-principal.key" -in "service-principal.crt"
+openssl pkcs12 -export -out "service-principal.pfx" -inkey "service-principal.key" -in "service-principal.crt"
 ```
 
 Now that we've generated a certificate, we can create the Azure Active Directory Application.

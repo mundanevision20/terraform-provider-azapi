@@ -62,14 +62,14 @@ The following arguments are supported:
 * `action` - (Optional) The name of the resource action. It's also possible to make Http requests towards the resource ID if leave this field empty.
 
 ---
+
 * `body` - (Optional) A JSON object that contains the request body.
-
 * `method` - (Optional) Specifies the Http method of the azure resource action. Allowed values are `POST` and `GET`. Defaults to `POST`.
-
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
   Here's an example. If it sets to `["keys"]`, it will set the following json to computed property `output`.
-```
+
+```json
 {
   "keys": [
     {
@@ -91,8 +91,8 @@ The following arguments are supported:
 In addition to the Arguments listed above - the following Attributes are exported:
 
 * `id` - The ID of the azure resource action.
-
 * `output` - The output json containing the properties specified in `response_export_values`. Here are some examples to decode json and extract the value.
+
 ```hcl
 // it will output "nHGYNd******i4wdug=="
 output "primary_key" {

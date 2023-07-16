@@ -71,22 +71,21 @@ resource "azapi_data_plane_resource" "dataset" {
 
 The following arguments are supported:
 
-* `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created. 
-
-* `parent_id` - (Required) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. 
-
+* `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
+* `parent_id` - (Required) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<api-version>` is version of the API used to manage this azure data plane resource.
 
 -> **Note** For the available resource types and parent IDs, please refer to the `Available Resources` section below.
 
-* `body` - (Required) A JSON object that contains the request body used to create and update data plane resource. 
+* `body` - (Required) A JSON object that contains the request body used to create and update data plane resource.
 
 ---
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
   Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following json to computed property `output`.
-```
+
+```console
 {
   "properties" : {
     "loginServer" : "registry1.azurecr.io"
@@ -100,9 +99,7 @@ The following arguments are supported:
 ```
 
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
-
 * `ignore_casing` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
-
 * `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`.
 
 ## Attributes Reference
@@ -110,9 +107,9 @@ The following arguments are supported:
 In addition to the Arguments listed above - the following Attributes are exported:
 
 * `id` - The ID of the azure resource.
-
 * `output` - The output json containing the properties specified in `response_export_values`. Here're some examples to decode json and extract the value.
-```
+
+```hcl
 // it will output "registry1.azurecr.io"
 output "login_server" {
   value = jsondecode(azapi_data_plane_resource.example.output).properties.loginServer
@@ -133,6 +130,7 @@ The `timeouts` block allows you to specify [timeouts](https://www.terraform.io/d
 * `delete` - (Defaults to 30 minutes) Used when deleting the azure resource.
 
 ## Available Resources
+
 | Resource Type | URL | Parent ID Example                                                                           |
 | --- | --- |---------------------------------------------------------------------------------------------|
 | Microsoft.AppConfiguration/configurationStores/keyValues | /kv/{key} | {storeName}.azconfig.io                                                                     |

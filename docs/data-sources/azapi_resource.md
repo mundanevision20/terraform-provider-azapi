@@ -63,8 +63,10 @@ output "quarantine_policy" {
 ## Arguments Reference
 
 The following arguments are supported:
+
 * `name` - (Optional) Specifies the name of the azure resource.
-* `parent_id` - (Optional) The ID of the azure resource in which this resource is created. It supports different kinds of deployment scope for **top level** resources: 
+* `parent_id` - (Optional) The ID of the azure resource in which this resource is created. It supports different kinds of deployment scope for **top level** resources:
+
     - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by [azurerm_resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group).
     - management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by [azurerm_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group).
     - extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
@@ -85,11 +87,12 @@ The following arguments are supported:
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
   Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following json to computed property `output`.
+
 ```
 {
-  "properties" : {
-    "loginServer" : "registry1.azurecr.io"
-    "policies" : {
+  "properties":{
+    "loginServer":"registry1.azurecr.io"
+    "policies":{
       "quarantinePolicy" = {
         "status" = "disabled"
       }
@@ -102,14 +105,12 @@ The following arguments are supported:
 
 In addition to the Arguments listed above - the following Attributes are exported:
 
-* `id` - The ID of the azure resource.
-  
+* `id` - The ID of the azure resource.  
 * `identity` - An `identity` block as defined below, which contains the Managed Service Identity information for this azure resource.
-
 * `location` - The Azure Region where the azure resource should exist.
-
 * `output` - The output json containing the properties specified in `response_export_values`. Here're some examples to decode json and extract the value.
-```
+
+```hcl
 // it will output "registry1.azurecr.io"
 output "login_server" {
   value = jsondecode(azapi_resource.example.output).properties.loginServer
@@ -128,11 +129,8 @@ output "quarantine_policy" {
 A `identity` block exports the following:
 
 * `type` - The Type of Identity which should be used for this azure resource. Possible values are `SystemAssigned`, `UserAssigned` and `SystemAssigned,UserAssigned`.
-
 * `identity_ids` - A list of User Managed Identity ID's which should be assigned to the azure resource.
-
 * `principal_id` - The Principal ID for the Service Principal associated with the Managed Service Identity of this azure resource.
-
 * `tenant_id` - The Tenant ID for the Service Principal associated with the Managed Service Identity of this azure resource.
 
 ## Timeouts

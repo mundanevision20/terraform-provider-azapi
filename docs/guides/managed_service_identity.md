@@ -62,16 +62,16 @@ Using managed identity for Azure resources as authentication is enabled in `azap
 
 By default, Terraform will use the system assigned identity for authentication. To use a user assigned identity instead, you will need to specify the `ARM_CLIENT_ID` environment variable (equivalent to provider block argument [`client_id`](https://registry.terraform.io/providers/azure/azapi/latest/docs#client_id)) to the [client id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity#client_id) of the identity.
 
-By default, Terraform will use a well-known MSI endpoint to get the authentication token, which covers most use cases. 
+By default, Terraform will use a well-known MSI endpoint to get the authentication token, which covers most use cases.
 
 !> **Note:** we recommend against running Terraform inside of a Function App as the low memory ceiling can lead to Terraform being terminated and data (including the State File) being lost. Instead we’d recommend considering triggering an external process, such as Terraform Cloud or a CI System to run these longer-running more intensive processes - see [Terraform in Automation](https://learn.hashicorp.com/tutorials/terraform/automate-terraform) for more details.
 
 In addition to a properly-configured management identity, Terraform needs to know the subscription ID and tenant ID to identify the full context for the Azure provider.
 
 ```shell
-$ export ARM_SUBSCRIPTION_ID=159f2485-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-$ export ARM_TENANT_ID=72f988bf-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-$ export ARM_CLIENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx # only necessary for user assigned identity
+export ARM_SUBSCRIPTION_ID=159f2485-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+export ARM_TENANT_ID=72f988bf-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+export ARM_CLIENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx # only necessary for user assigned identity
 ```
 
 A provider block is _technically_ optional when using environment variables. Even so, we recommend defining provider blocks so that you can pin or constrain the version of the provider being used, and configure other optional settings:
@@ -111,4 +111,4 @@ provider "azapi" {
 
 More information on [the fields supported in the provider block can be found here](../index.html#argument-reference).
 
-<!-- it's not clear to me that we even need this info; it seems like this is the sort of thing you'd know about if you needed it.
+<!-- it's not clear to me that we even need this info; it seems like this is the sort of thing you'd know about if you needed it. -->

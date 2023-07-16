@@ -75,23 +75,20 @@ The following arguments are supported:
 
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.
-
-* `resource_id` - (Required) The ID of an existing azure source. 
-
+* `resource_id` - (Required) The ID of an existing azure source.
 * `action` - (Optional) The name of the resource action. It's also possible to make Http requests towards the resource ID if leave this field empty.
 
 ---
 
 * `body` - (Optional) A JSON object that contains the request body.
-
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid modify azapi resources at the same time.
-
 * `method` - (Optional) Specifies the Http method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
   Here's an example. If it sets to `["keys"]`, it will set the following json to computed property `output`.
-```
+
+```json
 {
   "keys": [
     {
@@ -113,7 +110,6 @@ The following arguments are supported:
 In addition to the Arguments listed above - the following Attributes are exported:
 
 * `id` - The ID of the azure resource action.
-
 * `output` - The output json containing the properties specified in `response_export_values`. Here are some examples to decode json and extract the value.
 
 ```hcl

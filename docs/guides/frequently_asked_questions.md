@@ -8,7 +8,8 @@ description: |-
 ## After applying the configuration, running terraform plan found there's still a change?
 
 More context:
-```
+
+```console
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   ~ update in-place
 
@@ -29,7 +30,7 @@ Terraform will perform the following actions:
 Plan: 0 to add, 1 to change, 0 to destroy.
 ```
 
-In some cases, when `body` refers to some sensitive properties, user may not get a clear plan as above. This happens when a property contains sensitive credential like a storage account's access key, the value won't be returned by design. 
+In some cases, when `body` refers to some sensitive properties, user may not get a clear plan as above. This happens when a property contains sensitive credential like a storage account's access key, the value won't be returned by design.
 
 Please add `ignore_missing_property = true` to the resource block and apply it.
 
@@ -44,11 +45,9 @@ It's recommendded to manage `Microsoft.Network/virtualNetworks/subnets` in `Micr
 The reason is, if subnets are defined separately, when update the vnet which has no definition of its subnets, 
 its request body won't contain any subnets definitions, so existing subnets will be removed.
 
-
 ## How to use API/properties which is not in embeded schema?
 
 `AzApi` provider will use embedded schema to verify the inputs, to skip the validation, please add `schema_validation_enabled = false` to the resource block.
-
 
 ## How to manage properties which can only be set during update?
 

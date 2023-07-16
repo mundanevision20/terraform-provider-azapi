@@ -20,7 +20,7 @@ description: |-
 ~> **Note**: If you're using the **China**, **German** or **Government** Azure Clouds - you'll need to first configure the Azure CLI to work with that Cloud.  You can do this by running:
 
 ```shell
-$ az cloud set --name AzureChinaCloud|AzureGermanCloud|AzureUSGovernment
+az cloud set --name AzureChinaCloud|AzureGermanCloud|AzureUSGovernment
 ```
 
 ---
@@ -28,13 +28,13 @@ $ az cloud set --name AzureChinaCloud|AzureGermanCloud|AzureUSGovernment
 Login to the Azure CLI using:
 
 ```shell
-$ az login
+az login
 ```
 
 Once logged in - it's possible to list the Subscriptions associated with the account via:
 
 ```shell
-$ az account list --out table
+az account list --out table
 ```
 
 The output (similar to below) will display one or more Subscriptions - with the `SubscriptionId` column being the `SUBSCRIPTION_ID` field referenced below.
@@ -53,7 +53,7 @@ Contoso Prod                   AzureCloud   00000000-0400-0000-0070-000000000000
 Should you have more than one Subscription, you can specify the Subscription to use via the following command:
 
 ```bash
-$ az account set --subscription="SUBSCRIPTION_ID"
+az account set --subscription="SUBSCRIPTION_ID"
 ```
 
 ---
@@ -77,7 +77,6 @@ terraform {
 provider "azapi" {
 }
 ```
-
 
 At this point running either `terraform plan` or `terraform apply` should allow Terraform to run using the Azure CLI to authenticate.
 

@@ -92,15 +92,15 @@ resource "azapi_update_resource" "example" {
 
 The following arguments are supported:
 * `name` - (Optional) Specifies the name of the azure resource. Changing this forces a new resource to be created.
+* `parent_id` - (Optional) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. It supports different kinds of deployment scope for **top level** resources:
 
-* `parent_id` - (Optional) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. It supports different kinds of deployment scope for **top level** resources: 
     - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by [azurerm_resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group).
     - management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by [azurerm_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group).
     - extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
     - subscription scope: `parent_id` should be like `/subscriptions/00000000-0000-0000-0000-000000000000`
     - tenant scope: `parent_id` should be `/`
 
-  For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
+For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
 
 * `resource_id` - (Optional) The ID of an existing azure source. Changing this forces a new azure resource to be created.
 
@@ -108,14 +108,14 @@ The following arguments are supported:
 
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.
-
-* `body` - (Required) A JSON object that contains the request body used to add on an existing azure resource. 
+* `body` - (Required) A JSON object that contains the request body used to add on an existing azure resource.
 
 ---
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
   Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following json to computed property `output`.
+
 ```
 {
   "properties" : {
@@ -130,9 +130,7 @@ The following arguments are supported:
 ```
 
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
-
 * `ignore_casing` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
-
 * `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`.
 
 ## Attributes Reference
@@ -140,9 +138,9 @@ The following arguments are supported:
 In addition to the Arguments listed above - the following Attributes are exported:
 
 * `id` - The ID of the azure resource.
-
 * `output` - The output json containing the properties specified in `response_export_values`. Here're some examples to decode json and extract the value.
-```
+
+```hcl
 // it will output "registry1.azurecr.io"
 output "login_server" {
   value = jsondecode(azapi_resource.example.output).properties.loginServer
